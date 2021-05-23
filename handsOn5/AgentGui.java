@@ -30,6 +30,7 @@ class AgentGui extends JFrame {
         p.setLayout(new FlowLayout(FlowLayout.CENTER, 2, 2));
         p.add(new JLabel("Archivo de Hechos: "));
         factsField = new JTextField(30);
+        factsField.setEnabled(false);
         p.add(factsField);
 
         JButton addFactButton = new JButton("Add");
@@ -51,6 +52,7 @@ class AgentGui extends JFrame {
 
         p.add(new JLabel("Archivo de Reglas: "));
         rulesField = new JTextField(30);
+        rulesField.setEnabled(false);
         p.add(rulesField);
 
         JButton addRulesButton = new JButton("Add");
@@ -101,7 +103,7 @@ class AgentGui extends JFrame {
         JButton runButton = new JButton("Run");
 		runButton.addActionListener( new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
-                myAgent.ejecutar = true;
+                myAgent.askTime = true;
 			}
 		} );
 
