@@ -50,7 +50,7 @@ class AgentGui extends JFrame {
         JButton runButton = new JButton("Run");
 		runButton.addActionListener( new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
-                    myAgent.ejecutar = true;
+                    myAgent.askTime = true;
 			}
 		} );
 

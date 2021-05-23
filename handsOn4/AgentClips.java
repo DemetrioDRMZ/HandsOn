@@ -9,12 +9,13 @@ public class AgentClips extends Agent {
 
 	private AgentGui myGui;
   private BassicDemo clips;
+
   public boolean detener = false; 
+  public boolean tellTime = false;
+  public boolean askTime =false;
 
-  //String hecho = "";
-  //String regla = "";
-
-  public boolean ejecutar = false;
+  public String hecho = "";
+  public String regla = "";
 
     protected void setup() {
       // Create and show the GUI 
@@ -32,33 +33,30 @@ public class AgentClips extends Agent {
     }
 
     public void CargarReglas(String fact, String rules){
-      
-      if(!fact.isEmpty()){
 
-        clips.cargarHecho(fact);
+      hecho = fact;
+      regla = rules;
 
-        if(!rules.isEmpty()){
+      tellTime = true;
 
-          clips.cargarRegla(rules);
-        }
-      }
-      else{
-        if(!rules.isEmpty()){
+    }    
 
-          clips.cargarRegla(rules);
-        }
-      }
-    }
-    
     private class MyGenericBehaviour extends Behaviour {
 
       public void action() {
-        if(ejecutar == true){
+        
+        if(tellTime == true){
 
-          clips.ejecutarReglas();
+          addBehaviour(new TellBehaviour());
+          tellTime = false;
+        }
+        
+        if(askTime == true){
 
-          ejecutar = false;
-        }  
+          addBehaviour(new AskBehaviour());
+          askTime = false;
+        }
+          
       } 
         
       public boolean done() { 
@@ -73,4 +71,61 @@ public class AgentClips extends Agent {
         return super.onEnd();
       } 
     }
+    ////////// ---- Fin Generic Behaviour 
+
+    private class TellBehaviour extends Behaviour {
+      boolean tellDone = false;
+
+      public void action(){
+        System.out.println("TELL in action");
+        if(!hecho.isEmpty()){
+
+          clips.cargarHecho(hecho);
+
+          if(!regla.isEmpty()){
+
+            clips.cargarRegla(regla);
+
+          }
+        }
+        else{
+          if(!regla.isEmpty()){
+
+            clips.cargarRegla(regla);
+
+          }
+        }
+
+        tellDone = true;     
+      }
+
+      public boolean done() { 
+        if(tellDone == false)  
+          return false;
+        else
+          return true;
+      }
+    }
+    /////////// ----- Fin TellBehaviour
+
+    private class AskBehaviour extends Behaviour {
+      boolean askDone = false;
+
+      public void action(){
+        System.out.println("ASK in action");
+
+        clips.ejecutarReglas();
+        
+        askDone = true;
+      }
+
+      public boolean done() { 
+        if(askDone == false)  
+          return false;
+        else
+          return true;
+      }
+    }
+
+    ////// ----- Fin AskBehaviour
 }
